@@ -51,6 +51,9 @@ const Game = (() => {
   };
 
   const handleClick = (event) => {
+    if (gameOver) {
+      return;
+    }
     let index = parseInt(event.target.id);
     console.log(index);
 
@@ -62,6 +65,9 @@ const Game = (() => {
     ) {
       gameOver = true;
       alert(`${players[currentPlayerIndex].name} won!`);
+    } else if (checkForTie(gameBoard.getGameBoard())) {
+      gameOver = true;
+      alert(`ITS A TIE`);
     }
 
     currentPlayerIndex = currentPlayerIndex === 0 ? 1 : 0;
@@ -72,6 +78,7 @@ const Game = (() => {
       gameBoard.update(i, "");
     }
     gameBoard.render();
+    gameOver = false;
   };
   return {
     start,
@@ -100,6 +107,9 @@ function checkForWin(board) {
   return false;
 }
 
+function checkForTie(board) {
+  return board.every((cell) => cell !== "");
+}
 const restartButton = document.querySelector("#restartBtn");
 restartButton.addEventListener("click", () => {
   Game.restart();
